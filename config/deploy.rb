@@ -1,6 +1,7 @@
 # config/deploy.rb
 require "bundler/capistrano"
 
+set :application,     "devops-test-app"
 set :scm,             :git
 set :repository,      "https://github.com/geoffroymontel/devops-test-app.git"
 set :branch,          "origin/master"
@@ -29,10 +30,10 @@ set(:previous_revision) { capture("cd #{current_path}; git rev-parse --short HEA
 default_environment["RAILS_ENV"] = 'production'
 
 # Use our ruby-1.9.2-p290@my_site gemset
-default_environment["PATH"]         = "--"
-default_environment["GEM_HOME"]     = "--"
-default_environment["GEM_PATH"]     = "--"
-default_environment["RUBY_VERSION"] = "ruby-1.9.2-p290"
+# default_environment["PATH"]         = "--"
+# default_environment["GEM_HOME"]     = "--"
+# default_environment["GEM_PATH"]     = "--"
+default_environment["RUBY_VERSION"] = "ruby-1.9.3-p392"
 
 default_run_options[:shell] = 'bash'
 
@@ -69,7 +70,7 @@ namespace :deploy do
   end
 
   desc "Update the database (overwritten to avoid symlink)"
-  task :migrations do
+  task :migrations, :roles => :db do
     transaction do
       update_code
     end
@@ -88,8 +89,8 @@ namespace :deploy do
       mkdir -p #{latest_release}/tmp &&
       ln -s #{shared_path}/log #{latest_release}/log &&
       ln -s #{shared_path}/system #{latest_release}/public/system &&
-      ln -s #{shared_path}/pids #{latest_release}/tmp/pids &&
-      ln -sf #{shared_path}/database.yml #{latest_release}/config/database.yml
+      ln -s #{shared_path}/tmp/pids #{latest_release}/tmp/pids &&
+      ln -sf #{shared_path}/config/database.yml #{latest_release}/config/database.yml
     CMD
 
     if fetch(:normalize_asset_timestamps, true)
@@ -100,18 +101,18 @@ namespace :deploy do
   end
 
   desc "Zero-downtime restart of Unicorn"
-  task :restart, :except => { :no_release => true } do
-    run "kill -s USR2 `cat /tmp/unicorn.my_site.pid`"
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "service unicorn_#{application} restart"
   end
 
   desc "Start unicorn"
-  task :start, :except => { :no_release => true } do
-    run "cd #{current_path} ; bundle exec unicorn_rails -c config/unicorn.rb -D"
+  task :start, :roles => :app, :except => { :no_release => true } do
+    run "service unicorn_#{application} start"
   end
 
   desc "Stop unicorn"
-  task :stop, :except => { :no_release => true } do
-    run "kill -s QUIT `cat /tmp/unicorn.my_site.pid`"
+  task :stop, :roles => :app, :except => { :no_release => true } do
+    run "service unicorn_#{application} stop"
   end
 
   namespace :rollback do
