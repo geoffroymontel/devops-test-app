@@ -44,11 +44,11 @@ namespace :deploy do
   end
  
   # Precompile assets
-  # namespace :assets do
-  #   task :precompile, :roles => [:web, :app], :except => { :no_release => true } do
-  #     run %Q{cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile}
-  #   end
-  # end
+  namespace :assets do
+    task :precompile, :roles => [:web, :app], :except => { :no_release => true } do
+      run %Q{cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile}
+    end
+  end
 end
 
 before "deploy:assets:precompile", "deploy:copy_in_database_yml"
