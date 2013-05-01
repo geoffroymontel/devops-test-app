@@ -10,7 +10,7 @@ It consists in a simple scaffold to test the application deployment and DB setup
 
 `/posts` should return the scaffolding page
 
-# Setting up
+# Develop
 
 `config/database.yml` is not in the GIT repository.
 It's copied at deployment time.
@@ -25,17 +25,24 @@ development:
   timeout: 5000
 ```
 
-# deploy
-First deployment :
+# Set up your machines
+See https://github.com/geoffroymontel/devops-test-deploy
 
+# Deploy
+* First deployment :
 ```bash
 cap deploy:setup
 cap deploy:cold
 ```
 
-For subsequent deployment :
-
-```
+* For subsequent deployment :
+```bash
 git push origin master
 cap deploy
 ```
+
+# It works
+Point your browser to 
+http://33.33.13.2
+http://33.33.13.2/posts
+
