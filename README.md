@@ -43,6 +43,20 @@ cap deploy
 
 # It works
 Point your browser to 
-http://33.33.13.2
+
+http://33.33.13.2  
 http://33.33.13.2/posts
+
+# Logging
+* Nginx
+```bash
+cap ROLES="web" COMMAND="tail -f /var/log/nginx/access.log" invoke
+cap ROLES="web" COMMAND="tail -f /var/log/nginx/error.log" invoke
+```
+
+* Unicorn
+```bash
+cap ROLES="app" COMMAND="tail -f /var/www/devops-test-app/current/log/production.log" invoke
+cap ROLES="app" COMMAND="tail -f /var/www/devops-test-app/current/log/unicorn.log" invoke
+```
 
