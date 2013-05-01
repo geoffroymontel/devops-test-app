@@ -44,8 +44,8 @@ cap deploy
 # It works
 Point your browser to 
 
-http://33.33.13.2  
-http://33.33.13.2/posts
+http://172.16.0.2  
+http://172.16.0.2/posts
 
 # Logging
 * Nginx

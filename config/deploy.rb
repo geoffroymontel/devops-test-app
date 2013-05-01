@@ -9,14 +9,14 @@ set :scm, :git
 set :deploy_to, "/var/www/#{application}"
  
 # server there the web server is running (nginx)
-role :web, "33.33.13.2"
+role :web, "172.16.0.2"
  
 # server there the db is running
 # This is where Rails migrations will run
-role :db, "33.33.13.3", :primary => true
+role :db, "172.16.0.3", :primary => true
 
 # servers there the app servers are running (unicorn)
-role :app, "33.33.13.4", "33.33.13.5"
+role :app, "172.16.0.4", "172.16.0.5"
 
 set :rails_env, :production
  
