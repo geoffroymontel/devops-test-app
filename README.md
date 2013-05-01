@@ -24,3 +24,18 @@ development:
   pool: 5
   timeout: 5000
 ```
+
+# deploy
+First deployment :
+
+```bash
+cap deploy:setup
+cap deploy:cold
+```
+
+For subsequent deployment :
+
+```
+git push origin master
+cap deploy
+```
