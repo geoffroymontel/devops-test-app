@@ -38,6 +38,10 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "service unicorn_#{application} restart"
   end
+
+  task :copy_in_database_yml do
+    run "cp #{shared_path}/config/database.yml #{latest_release}/config/"
+  end
  
   # Precompile assets
   namespace :assets do
@@ -46,3 +50,5 @@ namespace :deploy do
     end
   end
 end
+
+before "deploy:assets:precompile", "deploy:copy_in_database_yml"
