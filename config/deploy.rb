@@ -1,3 +1,8 @@
+# Assets pipeline
+# Assets need to be precompiled both on web and app servers
+set :assets_role, [:web, :app]
+load 'deploy/assets'
+
 # Execute "bundle install" after deploy, but only when really needed
 require "bundler/capistrano"
   
@@ -39,14 +44,6 @@ namespace :deploy do
 
   task :copy_in_database_yml do
     run "cp #{shared_path}/config/database.yml #{latest_release}/config/"
-  end
- 
-  # Precompile assets
-  # I have to precompile the assets on the app servers too, and I don't really know why...
-  namespace :assets do
-    task :precompile, :roles => [:web, :app], :except => { :no_release => true } do
-      run %Q{cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile}
-    end
   end
 end
 
