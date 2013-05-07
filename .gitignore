@@ -16,3 +16,5 @@
 
 # Important : ignore db setup file
 /config/database.yml
+
+.DS_Store
