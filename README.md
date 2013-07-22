@@ -10,6 +10,8 @@ It consists in a simple scaffold to test the application deployment and DB setup
 
 `/posts` should return the scaffolding page
 
+`/info` will return ruby & rails versions
+
 # Develop
 
 `config/database.yml` is not in the GIT repository.

@@ -1,5 +1,6 @@
 DevopsTestApp::Application.routes.draw do
   resources :posts
+  get 'info', to: 'info#index'
 
 
   # The priority is based upon order of creation:
