@@ -5,6 +5,15 @@ load 'deploy/assets'
 
 # Execute "bundle install" after deploy, but only when really needed
 require "bundler/capistrano"
+
+# chruby support
+default_run_options[:shell] = '/bin/bash'
+set :ruby_version, "ruby-2.0"
+set :chruby_config, "/etc/profile.d/chruby.sh"
+set :set_ruby_cmd, "source #{chruby_config} && chruby #{ruby_version}"
+set(:bundle_cmd) {
+  "#{set_ruby_cmd} && exec bundle"
+}
   
 # Name of the application in scm (GIT)
 set :application, "devops-test-app"
